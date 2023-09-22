@@ -34,9 +34,9 @@ available squares that the player can move their pawn to
 
 
 ## Heuristics
-Three heuristics will be used to design the game.  
+Two heuristics will be used to design the game.  
 
 ### Heuristic 1:
 ### Heuristic 2:
-### Heuristic 3:
+
 
