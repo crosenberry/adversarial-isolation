@@ -35,13 +35,15 @@ class IsolationBoard:
         x, y = position
         return self.is_valid_position(x, y) and self.board[y][x] == 1
 
-    def display(self, player_position=None):
-        """ Display the board with optional player position """
+    def display(self, p1_position, p2_position):
+        """ Display the board with both player positions """
         for y, row in enumerate(self.board):
             display_row = []
             for x, cell in enumerate(row):
-                if (x, y) == player_position:
-                    display_row.append('P')
+                if (x, y) == p1_position:
+                    display_row.append('P1')
+                elif (x, y) == p2_position:
+                    display_row.append('P2')
                 else:
                     display_row.append(str(cell))
             print(' '.join(display_row))
