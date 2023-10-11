@@ -1,6 +1,6 @@
 #  Defines game board, legal moves, win conditions etc.
 class IsolationBoard:
-    def __init__(self, width=8, height=6):
+    def __init__(self, width=6, height=8):
         # Initializes the board as a 2D list of 1s
         self.board = [[1 for _ in range(width)] for _ in range(height)]
         self.width = width
