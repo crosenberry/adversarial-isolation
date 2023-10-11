@@ -1,7 +1,6 @@
 # Defines the Player class, including methods for making moves
 from Game_Logic.board import IsolationBoard
 
-
 class IsolationPlayer:
     def __init__(self, board):
         self.board = board
