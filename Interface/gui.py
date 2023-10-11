@@ -36,9 +36,20 @@ class IsolationGame:
         self.buttons[self.p1_position[0]][self.p1_position[1]].config(text="P1")
         self.buttons[self.p2_position[0]][self.p2_position[1]].config(text="P2")
 
+    def end_game(self, result_message):
+        for row in self.buttons:
+            for button in row:
+                button.config(state=tk.DISABLED)
+        self.info_box.insert(tk.END, f"\nGame Over! {result_message}")
+
     def on_click(self, i, j):
         # Player 1's turn
         if self.current_player == "P1":
+            # Check if there are any legal moves left for Player 1
+            if not self.player.get_legal_moves(self.p1_position):
+                self.end_game("Player 2 Wins!")
+                return
+
             if not self.is_block_phase:  # Move Phase for P1
                 if self.player.make_move(self.p1_position, (i, j)):
                     self.buttons[self.p1_position[0]][self.p1_position[1]].config(text="O")
@@ -56,6 +67,11 @@ class IsolationGame:
 
         # Player 2's turn
         else:
+            # Check if there are any legal moves left for Player 2
+            if not self.player.get_legal_moves(self.p2_position):
+                self.end_game("Player 1 Wins!")
+                return
+
             if not self.is_block_phase:  # Move Phase for P2
                 if self.player.make_move(self.p2_position, (i, j)):
                     self.buttons[self.p2_position[0]][self.p2_position[1]].config(text="O")
