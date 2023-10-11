@@ -1,5 +1,5 @@
 # Defines the Player class, including methods for making moves
-from board import IsolationBoard
+from Game_Logic.board import IsolationBoard
 
 
 class IsolationPlayer:
@@ -20,12 +20,16 @@ class IsolationPlayer:
 
         return legal_moves
 
-    def make_move(self, position):
-        # Note that moving does not "occupy" a position anymore in the sense of making it a 0.
-        return self.board.is_valid_position(*position) and self.board.is_position_free(position)
-
     def make_block(self, position):
+        """ Block a position on the board. """
         return self.board.occupy_position(position)
+
+    def make_move(self, current_position, new_position):
+        """ Attempt to move the player to a new position. """
+        if new_position in self.get_legal_moves(current_position):
+            self.board.occupy_position(current_position)  # Freeing the previous position
+            return True
+        return False
 
     def get_user_move_and_block(self, current_position, player_name):
         """ Prompt the user for a move and a block, returning both coordinates """

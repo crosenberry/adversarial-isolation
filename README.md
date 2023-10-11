@@ -9,7 +9,7 @@ Artificial Intelligence
 - [How to win](#win-conditions)
 - [Heuristics](#Heuristics)
 
-
++
 
 ## Introduction
 - Isolation or Isola is a German boardgame from the 1970’s. The game is for two players. Each player
