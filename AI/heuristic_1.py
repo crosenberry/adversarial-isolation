@@ -1,5 +1,5 @@
 # Implements first heuristic for adversarial isolation
-class IsolationGame:
+class IsolationHeuristic1:
     def __init__(self):
         # Initialize the board state, locations, etc. as needed
         pass
@@ -55,15 +55,15 @@ class IsolationGame:
 
 
 # Example usage:
-game = IsolationGame()
-current_loc = (2, 2)
-next_loc = (3, 3)
-opponent_loc = (4, 4)
-board_state = []  # This should be your board representation
-board_state_after_removal = []  # This should be your board representation after removing a token and making a move
+#game = IsolationGame()
+#current_loc = (2, 2)
+#next_loc = (3, 3)
+#opponent_loc = (4, 4)
+#board_state = []  # This should be your board representation
+#board_state_after_removal = []  # This should be your board representation after removing a token and making a move
 
-heuristic_value_move = game.heuristic_move(current_loc, next_loc, board_state)
-heuristic_value_token = game.heuristic_token(opponent_loc, board_state_after_removal)
+#heuristic_value_move = game.heuristic_move(current_loc, next_loc, board_state)
+#heuristic_value_token = game.heuristic_token(opponent_loc, board_state_after_removal)
 
-print(f"Heuristic Value for Move: {heuristic_value_move}")
-print(f"Heuristic Value for Token Removal: {heuristic_value_token}")
+#print(f"Heuristic Value for Move: {heuristic_value_move}")
+#print(f"Heuristic Value for Token Removal: {heuristic_value_token}")
