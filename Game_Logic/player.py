@@ -6,7 +6,7 @@ class IsolationPlayer:
     def __init__(self, board):
         self.board = board
 
-    def get_legal_moves(self, current_position):
+    def get_legal_moves(self, current_position, opponent_position):
         x, y = current_position
         legal_moves = []
 
@@ -15,7 +15,8 @@ class IsolationPlayer:
 
         for dx, dy in directions:
             new_x, new_y = x + dx, y + dy
-            if self.board.is_valid_position(new_x, new_y) and self.board.is_position_free((new_x, new_y)):
+            if self.board.is_valid_position(new_x, new_y) and (
+            new_x, new_y) != opponent_position and self.board.is_position_free((new_x, new_y)):
                 legal_moves.append((new_x, new_y))
 
         return legal_moves
@@ -24,10 +25,9 @@ class IsolationPlayer:
         """ Block a position on the board. """
         return self.board.occupy_position(position)
 
-    def make_move(self, current_position, new_position):
+    def make_move(self, current_position, new_position, opponent_position):
         """ Attempt to move the player to a new position. """
-        if new_position in self.get_legal_moves(current_position):
-            self.board.occupy_position(current_position)  # Freeing the previous position
+        if new_position in self.get_legal_moves(current_position, opponent_position):
             return True
         return False
 
