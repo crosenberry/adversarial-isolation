@@ -1,6 +1,30 @@
 import tkinter as tk
 
 class IsolationGame:
+    """
+    IsolationGame - GUI Visual of the Isolation Game.
+
+    This class provides a graphical interface for playing the Isolation Game. The game board is represented
+    as a 6x8 grid, with players P1 and P2 starting from fixed positions. Players take turns making a move
+    and then blocking any spot on the board. The GUI updates in real-time, displaying each player's moves,
+    blocks, and game messages in a side info box.
+
+    Attributes:
+        master (tkinter object): The GUI object.
+        player (IsolationPlayer object): An instance of the player class responsible for game logic.
+        board (IsolationBoard object): An instance of the board class representing the game state.
+        p1_position (tuple): Current position of Player 1.
+        p2_position (tuple): Current position of Player 2.
+        current_player (str): Indicates which player's turn it is ("P1" or "P2").
+        is_block_phase (bool): Flag to indicate if the current player is in the block phase.
+        buttons (list): A 6x8 list representing the grid buttons.
+        info_box (tkinter.Text): Text widget to display game messages and logs.
+
+    Methods:
+        end_game(result_message): Ends the game and displays the given result message.
+        on_click(i, j): Handles the logic when a button is clicked on the board.
+        switch_player(): Switches the active player.
+    """
     def __init__(self, master, player, board):
         self.master = master
         self.player = player

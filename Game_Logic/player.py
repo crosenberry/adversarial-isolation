@@ -2,6 +2,33 @@
 from Game_Logic.board import IsolationBoard
 
 class IsolationPlayer:
+    """
+    IsolationPlayer Class - Logic handler for players in the Isolation Game.
+
+    This class provides the essential game logic for the players, determining
+    legal moves, blocking positions, and managing the player's interactions
+    with the game board.
+
+    Attributes:
+        board (IsolationBoard object): An instance of the board class representing the game state.
+
+    Methods:
+        get_legal_moves(current_position, opponent_position):
+            Determine all legal moves a player can make from a given position, considering the opponent's position.
+
+        make_block(position):
+            Marks a specific board position as blocked.
+
+        make_move(current_position, new_position, opponent_position):
+            Validates if a move from the current position to a new position is legal.
+
+        get_user_move_and_block(current_position, player_name):
+            Interactively prompt the user for their desired move and block positions.
+
+    Note:
+        The game assumes a 6x8 board, and the player can move in all 8 cardinal and diagonal directions from
+        their current position unless blocked by the opponent or by blocked cells.
+    """
     def __init__(self, board):
         self.board = board
 
@@ -52,7 +79,7 @@ class IsolationPlayer:
                 print("Invalid input. Enter coordinates as 'x y'. Try again.")
 
 
-# Test the combined functionality
+# Test the combined functionality (only run for testing)
 if __name__ == "__main__":
     board = IsolationBoard()
     player = IsolationPlayer(board)
