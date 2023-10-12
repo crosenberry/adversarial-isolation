@@ -2,12 +2,12 @@ def get_adjacent_cells(location):
     x, y = location
     # List possible adjacent locations.
     # You may need to adjust this if movement is restricted by the board boundaries.
-    possible_adjacents = [
+    possible_adjacent = [
         (x - 1, y - 1), (x - 1, y), (x - 1, y + 1),
         (x, y - 1),                     (x, y + 1),
         (x + 1, y - 1), (x + 1, y), (x + 1, y + 1)
     ]
-    return [loc for loc in possible_adjacents if 0 <= loc[0] < 6 and 0 <= loc[1] < 8]  # Ensure valid board locations
+    return [loc for loc in possible_adjacent if 0 <= loc[0] < 6 and 0 <= loc[1] < 8]  # Ensure valid board locations
 
 
 def count_high_density_cells(board_state):

@@ -1,6 +1,6 @@
 # Heuristic vs Heuristic
 from AI.decision_maker import DecisionMaker
-from Game_Logic.board import IsolationGame
+from Game_Logic.board import IsolationBoard
 
 def run_experiment(num_games=100):
     # Track wins
@@ -9,7 +9,7 @@ def run_experiment(num_games=100):
     draws = 0
 
     for _ in range(num_games):
-        game = IsolationGame()
+        game = IsolationBoard()
         decision_maker = DecisionMaker(game)
 
         while not game.is_over():
