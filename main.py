@@ -2,6 +2,15 @@
 from Interface import gui
 from Game_Logic.board import IsolationBoard
 from Game_Logic.player import IsolationPlayer
+# =============================================================================
+# main.py
+# Jacob Yealy & Caden Rosenberry
+# Artificial Intelligence
+#
+# Description:
+# Main.py recieves an instance of the IsolationBoard and IsolationPlayer.
+# Then we tie these objects to the GUI so that it can display the game as its played.
+# =============================================================================
 
 if __name__ == "__main__":
     # Create instances of board

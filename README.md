@@ -4,12 +4,11 @@ Jacob Yealy & Caden Rosenberry
 Artificial Intelligence  
 
 ## Table of Contents
-- [Introduction](#Introduction)  
+- [Introduction](#Introduction)
+- [Instructions](#instructions)
 - [Gameplay](#Gameplay)
 - [How to win](#win-conditions)
 - [Heuristics](#Heuristics)
-
-+
 
 ## Introduction
 - Isolation or Isola is a German boardgame from the 1970’s. The game is for two players. Each player
@@ -20,6 +19,14 @@ of each short side.
 by a player.
 
 
+## Instructions
+- To play the game, run [main.py](main.py).
+- Player 1 will begin each game, able to move one space around them and then block one space on the board.  
+- Then, player 2 will do the same and turns will rotate until one player cannot move anymore, thus making them in "Isolation"
+- Player 2 can be controlled by another human or by the algorithms implemented in this program.
+- For legal game moves and board functionality testing, reference [Game_Logic](Game_Logic).
+- To examine the heuristics used by the other player, examine [AI](AI).
+
 ## Gameplay
 - The first player is chosen randomly. A player moves its pawn one cell up, down, left, right, or
 diagonally from their current position to an available cell.
@@ -27,10 +34,6 @@ diagonally from their current position to an available cell.
 does not contain the other player.
 - Then the player chooses any available cell and removes the token.
 This means that no player can move to that cell in a future move.
-
-## Win Conditions
-- The first player to isolate their opponent wins the game. A player is isolated when there are no
-available squares that the player can move their pawn to
 
 
 ## Heuristics
