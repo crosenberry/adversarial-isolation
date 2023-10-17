@@ -24,3 +24,28 @@ class AIPlayer:
 
     def compute_move(self, current_position, opponent_position):
         return self.decision_maker.choose_move(current_position, opponent_position, self.max_depth, self.heuristic_type)
+
+    def compute_block(self, current_position, opponent_position):
+        # Initialize the cell to block and its resultant moves to the maximum possible
+        best_block = None
+        min_available_moves = float('inf')
+
+        # Iterate over all cells on the board
+        for i in range(6):
+            for j in range(8):
+                if (i, j) != current_position and (i, j) != opponent_position:
+                    # Simulate a block at this cell
+                    self.board.block_cell((i, j))
+
+                    # Calculate number of moves available for the human player after the block
+                    available_moves_after_block = len(self.get_legal_moves(opponent_position, current_position))
+
+                    # Restore the cell (remove the block) for the next iteration
+                    self.board.unblock_cell((i, j))
+
+                    # Check if this block is better than the previous best block
+                    if available_moves_after_block < min_available_moves:
+                        min_available_moves = available_moves_after_block
+                        best_block = (i, j)
+
+        return best_block

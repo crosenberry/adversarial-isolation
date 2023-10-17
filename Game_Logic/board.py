@@ -13,7 +13,7 @@ class IsolationBoard:
         """
         x, y = position
         if self.is_valid_position(x, y) and self.board[y][x] == 1:
-            self.board[y][x] = 0
+            self.board[y][x] = 0  # Occupy the position
             return True
         return False
 
@@ -34,6 +34,14 @@ class IsolationBoard:
         """
         x, y = position
         return self.is_valid_position(x, y) and self.board[y][x] == 1
+
+    def block_cell(self, position):
+        x, y = position
+        self.board[y][x] = 'X'  # Using 'X' to represent blocked cells
+
+    def unblock_cell(self, position):
+        x, y = position
+        self.board[y][x] = 1  # Reverting back to unblocked representation
 
     def display(self, p1_position, p2_position):
         """ Display the board with both player positions """
