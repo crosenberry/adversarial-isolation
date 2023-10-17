@@ -25,9 +25,11 @@ class IsolationGame:
         on_click(i, j): Handles the logic when a button is clicked on the board.
         switch_player(): Switches the active player.
     """
-    def __init__(self, master, player, board):
+
+    def __init__(self, master, human_player, ai_player, board):
         self.master = master
-        self.player = player
+        self.human_player = human_player
+        self.ai_player = ai_player
         self.board = board
         self.p1_position = (2, 0)
         self.p2_position = (3, 7)
@@ -67,49 +69,51 @@ class IsolationGame:
         self.info_box.insert(tk.END, f"\nGame Over! {result_message}")
 
     def on_click(self, i, j):
-        # Player 1's turn
         if self.current_player == "P1":
             # Check if there are any legal moves left for Player 1
-            if not self.player.get_legal_moves(self.p1_position, self.p2_position):  # Provide Player 2's position
+            if not self.human_player.get_legal_moves(self.p1_position, self.p2_position):  # Provide Player 2's position
                 self.end_game("Player 2 Wins!")
                 return
 
             if not self.is_block_phase:  # Move Phase for P1
-                if self.player.make_move(self.p1_position, (i, j), self.p2_position):
+                if self.human_player.make_move(self.p1_position, (i, j), self.p2_position):
                     self.buttons[self.p1_position[0]][self.p1_position[1]].config(text="O")
                     self.p1_position = (i, j)
                     self.buttons[i][j].config(text="P1")
                     self.info_box.insert(tk.END, f"\n{self.current_player} moved to ({i}, {j})")
                     self.is_block_phase = True
             else:  # Block Phase for P1
-                if (i, j) not in [self.p1_position, self.p2_position] and self.player.make_block((i, j)):
+                if (i, j) not in [self.p1_position, self.p2_position] and self.human_player.make_block((i, j)):
                     self.buttons[i][j].config(text="X")
                     self.info_box.insert(tk.END, f"\n{self.current_player} blocked position ({i}, {j})")
                     self.is_block_phase = False
                     self.switch_player()
                     self.info_box.insert(tk.END, f"\n{self.current_player}'s turn!")
-
-        # Player 2's turn
+                    self.ai_move()  # Invoke AI move immediately after switching to Player 2
         else:
-            # Check if there are any legal moves left for Player 2
-            if not self.player.get_legal_moves(self.p2_position, self.p1_position):  # Provide Player 1's position
-                self.end_game("Player 1 Wins!")
-                return
+            # Player 2's turn is handled by ai_move()
+            pass
 
-            if not self.is_block_phase:  # Move Phase for P2
-                if self.player.make_move(self.p2_position, (i, j), self.p1_position):
-                    self.buttons[self.p2_position[0]][self.p2_position[1]].config(text="O")
-                    self.p2_position = (i, j)
-                    self.buttons[i][j].config(text="P2")
-                    self.info_box.insert(tk.END, f"\n{self.current_player} moved to ({i}, {j})")
-                    self.is_block_phase = True
-            else:  # Block Phase for P2
-                if (i, j) not in [self.p1_position, self.p2_position] and self.player.make_block((i, j)):
-                    self.buttons[i][j].config(text="X")
-                    self.info_box.insert(tk.END, f"\n{self.current_player} blocked position ({i}, {j})")
-                    self.is_block_phase = False
-                    self.switch_player()
-                    self.info_box.insert(tk.END, f"\n{self.current_player}'s turn!")
+    def ai_move(self):
+        # AI determines its move
+        i, j = self.ai_player.compute_move(self.p2_position, self.p1_position)  # Gets the AI's move
+
+        # Move AI to the new position
+        self.buttons[self.p2_position[0]][self.p2_position[1]].config(text="O")
+        self.p2_position = (i, j)
+        self.buttons[i][j].config(text="P2")
+        self.info_box.insert(tk.END, f"\n{self.current_player} moved to ({i}, {j})")
+
+        # Now, for the block phase, AI determines which cell to block
+        # NOTE: You will need to implement compute_block method in the AIPlayer class!
+        block_i, block_j = self.ai_player.compute_block(self.p2_position,
+                                                        self.p1_position)
+        self.buttons[block_i][block_j].config(text="X")
+        self.info_box.insert(tk.END, f"\n{self.current_player} blocked position ({block_i}, {block_j})")
+
+        # Switch back to Player 1 for the next turn
+        self.switch_player()
+        self.info_box.insert(tk.END, f"\n{self.current_player}'s turn!")
 
     def switch_player(self):
         if self.current_player == "P1":

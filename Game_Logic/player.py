@@ -1,5 +1,5 @@
 # Defines the Player class, including methods for making moves
-from Game_Logic.board import IsolationBoard
+from .board import IsolationBoard
 
 class IsolationPlayer:
     """

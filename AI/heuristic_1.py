@@ -1,31 +1,37 @@
 # Implements first heuristic for adversarial isolation
 class IsolationHeuristic1:
-    def __init__(self):
-        # Initialize the board state, locations, etc. as needed
-        pass
+    def __init__(self, board_instance):
+        self.board = board_instance
 
-    def get_available_cells(self, location, board_state):
+    def get_available_cells(self, location):
         """
         Get the number of available cells surrounding a given location.
 
         :param location: Tuple representing the location.
-        :param board_state: A representation of the current board state.
         :return: Number of available cells.
         """
-        # Implement this function based on your game’s rules and board representation.
-        pass
+        x, y = location
+        legal_moves = []
+        # Define possible moves in each direction, including diagonals
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)]
 
-    def heuristic_move(self, current_location, next_location, board_state):
+        for dx, dy in directions:
+            new_x, new_y = x + dx, y + dy
+            if self.board.is_valid_position(new_x, new_y) and self.board.is_position_free((new_x, new_y)):
+                legal_moves.append((new_x, new_y))
+
+        return len(legal_moves)
+
+    def heuristic_move(self, current_location, next_location):
         """
         Calculate the heuristic value for moving a pawn.
 
         :param current_location: Tuple representing the current location of the pawn.
         :param next_location: Tuple representing the next location of the pawn.
-        :param board_state: A representation of the current board state.
         :return: The heuristic value of the move.
         """
-        current_cells = self.get_available_cells(current_location, board_state)
-        next_cells = self.get_available_cells(next_location, board_state)
+        current_cells = self.get_available_cells(current_location)
+        next_cells = self.get_available_cells(next_location)
 
         if current_cells - next_cells > 0:
             return 1
@@ -34,17 +40,15 @@ class IsolationHeuristic1:
         else:
             return -1
 
-    def heuristic_token(self, opponent_location, board_state_after_removal):
+    def heuristic_token(self, opponent_location):
         """
         Calculate the heuristic value for removing a token.
 
         :param opponent_location: Tuple representing the opponent's location.
-        :param board_state_after_removal: The board state after the proposed token is removed and the player’s proposed move is made.
         :return: The heuristic value of removing the token.
         """
-        current_available_cells = self.get_available_cells(opponent_location, board_state_after_removal)
-        original_available_cells = self.get_available_cells(opponent_location, board_state)
-        # Assuming board_state is the original state
+        current_available_cells = self.get_available_cells(opponent_location)
+        original_available_cells = self.get_available_cells(opponent_location) # this is not altered in this context
 
         if current_available_cells == 0:  # a.k.a WINNER
             return 100
@@ -53,17 +57,7 @@ class IsolationHeuristic1:
         else:
             return 0
 
-
-# Example usage:
-#game = IsolationGame()
-#current_loc = (2, 2)
-#next_loc = (3, 3)
-#opponent_loc = (4, 4)
-#board_state = []  # This should be your board representation
-#board_state_after_removal = []  # This should be your board representation after removing a token and making a move
-
-#heuristic_value_move = game.heuristic_move(current_loc, next_loc, board_state)
-#heuristic_value_token = game.heuristic_token(opponent_loc, board_state_after_removal)
-
-#print(f"Heuristic Value for Move: {heuristic_value_move}")
-#print(f"Heuristic Value for Token Removal: {heuristic_value_token}")
+    def evaluate(self, current_location, opponent_location):
+        move_value = self.heuristic_move(current_location, opponent_location)
+        token_value = self.heuristic_token(opponent_location)
+        return move_value + token_value
