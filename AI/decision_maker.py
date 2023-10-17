@@ -1,27 +1,52 @@
-from .heuristic_1 import heuristic_1  # adjust the import based on your actual implementation
-from .heuristic_2 import heuristic_2  # adjust the import based on your actual implementation
+import random
 
 
 class DecisionMaker:
-    def __init__(self, game):
-        self.game = game
 
-    def decide_move(self):
-        moves = self.game.get_legal_moves()
-        ranked_moves = []
+    def __init__(self, game_instance):
+        self.game = game_instance
+        self.infinity = float('inf')
+        self.neg_infinity = float('-inf')
 
-        for move in moves:
-            heuristic_value_move = heuristic_1(self.game, move)
-            heuristic_value_token = heuristic_2(self.game, move)
-            total_heuristic = heuristic_value_move + heuristic_value_token
-            ranked_moves.append((move, total_heuristic))
+    def alphabeta(self, depth, alpha, beta, maximizing_player, board_state, heuristic_type):
+        if depth == 0 or self.game.is_game_over(board_state):
+            return self.evaluate_board(board_state, heuristic_type)
 
-        ranked_moves.sort(key=lambda x: x[1], reverse=True)
+        possible_moves = self.game.get_possible_moves(board_state)
+        random.shuffle(possible_moves)  # Randomize moves to prevent bias
 
-        # If you have multiple moves with the same heuristic value,
-        # you might want to break ties here.
+        if maximizing_player:
+            value = self.neg_infinity
+            for move in possible_moves:
+                new_board_state = self.game.make_move(board_state, move)
+                value = max(value, self.alphabeta(depth - 1, alpha, beta, False, new_board_state, heuristic_type))
+                alpha = max(alpha, value)
+                if alpha >= beta:
+                    break
+            return value
+        else:
+            value = self.infinity
+            for move in possible_moves:
+                new_board_state = self.game.make_move(board_state, move)
+                value = min(value, self.alphabeta(depth - 1, alpha, beta, True, new_board_state, heuristic_type))
+                beta = min(beta, value)
+                if beta <= alpha:
+                    break
+            return value
 
-        # Returning the move associated with the highest heuristic value.
-        return ranked_moves[0][0] if ranked_moves else None
+    def choose_move(self, board_state, max_depth, heuristic_type="heuristic_1"):
+        best_value = self.neg_infinity
+        best_move = None
 
-# Then, you can use this DecisionMaker class in your main game loop or wherever you handle turn-taking.
+        for depth in range(1, max_depth + 1):
+            alpha = self.neg_infinity
+            beta = self.infinity
+            possible_moves = self.game.get_possible_moves(board_state)
+            random.shuffle(possible_moves)  # Randomize moves to prevent bias
+            for move in possible_moves:
+                new_board_state = self.game.make_move(board_state, move)
+                move_value = self.alphabeta(depth - 1, alpha, beta, False, new_board_state, heuristic_type)
+                if move_value > best_value:
+                    best_value = move_value
+                    best_move = move
+        return best_move
