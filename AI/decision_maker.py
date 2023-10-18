@@ -14,12 +14,12 @@ class DecisionMaker:
         }
 
     def alphabeta(self, depth, alpha, beta, maximizing_player, current_position, opponent_position, heuristic_type):
-        if depth == 0 or not self.player.get_legal_moves(current_position, opponent_position):
+        if depth == 0 or not self.player.get_legal_moves(self.board, current_position, opponent_position):
             return self.evaluate_board(current_position, opponent_position, heuristic_type)
 
         if maximizing_player:
             value = self.neg_infinity
-            for move in self.player.get_legal_moves(current_position, opponent_position):
+            for move in self.player.get_legal_moves(self.board, current_position, opponent_position):
                 value = max(value, self.alphabeta(depth - 1, alpha, beta, False, move, current_position, heuristic_type))
                 alpha = max(alpha, value)
                 if alpha >= beta:
@@ -27,7 +27,7 @@ class DecisionMaker:
             return value
         else:
             value = self.infinity
-            for move in self.player.get_legal_moves(opponent_position, current_position):
+            for move in self.player.get_legal_moves(self.board, opponent_position, current_position):
                 value = min(value, self.alphabeta(depth - 1, alpha, beta, True, opponent_position, move, heuristic_type))
                 beta = min(beta, value)
                 if beta <= alpha:
@@ -37,7 +37,7 @@ class DecisionMaker:
     def choose_move(self, current_position, opponent_position, max_depth, heuristic_type="heuristic_1"):
         best_value = self.neg_infinity
         best_move = None
-        for move in self.player.get_legal_moves(current_position, opponent_position):
+        for move in self.player.get_legal_moves(self.board, current_position, opponent_position):
             value = self.alphabeta(max_depth - 1, self.neg_infinity, self.infinity, False, move, current_position, heuristic_type)
             if value > best_value:
                 best_value = value
@@ -49,5 +49,3 @@ class DecisionMaker:
         heuristic_class = self.heuristics[heuristic_type]
         heuristic_instance = heuristic_class(self.board)
         return heuristic_instance.evaluate(current_position, opponent_position)
-
-
