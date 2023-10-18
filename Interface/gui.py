@@ -85,6 +85,7 @@ class IsolationGame:
             else:  # Block Phase for P1
                 if (i, j) not in [self.p1_position, self.p2_position] and self.human_player.make_block((i, j)):
                     self.buttons[i][j].config(text="X")
+                    self.buttons[i][j].config(state=tk.DISABLED)
                     self.info_box.insert(tk.END, f"\n{self.current_player} blocked position ({i}, {j})")
                     self.is_block_phase = False
                     self.switch_player()
@@ -109,6 +110,7 @@ class IsolationGame:
         block_i, block_j = self.ai_player.compute_block(self.p2_position,
                                                         self.p1_position)
         self.buttons[block_i][block_j].config(text="X")
+        self.buttons[block_i][block_j].config(state=tk.DISABLED)
         self.info_box.insert(tk.END, f"\n{self.current_player} blocked position ({block_i}, {block_j})")
 
         # Switch back to Player 1 for the next turn

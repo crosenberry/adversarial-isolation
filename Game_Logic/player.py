@@ -29,6 +29,7 @@ class IsolationPlayer:
         The game assumes a 6x8 board, and the player can move in all 8 cardinal and diagonal directions from
         their current position unless blocked by the opponent or by blocked cells.
     """
+
     def __init__(self, board):
         self.board = board
 
@@ -42,14 +43,14 @@ class IsolationPlayer:
         for dx, dy in directions:
             new_x, new_y = x + dx, y + dy
             if self.board.is_valid_position(new_x, new_y) and (
-            new_x, new_y) != opponent_position and self.board.is_position_free((new_x, new_y)):
+                    new_x, new_y) != opponent_position and self.board.is_position_free((new_x, new_y)):
                 legal_moves.append((new_x, new_y))
 
         return legal_moves
 
     def make_block(self, position):
         """ Block a position on the board. """
-        return self.board.occupy_position(position)
+        return self.board.block_cell(position)
 
     def make_move(self, current_position, new_position, opponent_position):
         """ Attempt to move the player to a new position. """
@@ -57,9 +58,9 @@ class IsolationPlayer:
             return True
         return False
 
-    def get_user_move_and_block(self, current_position, player_name):
+    def get_user_move_and_block(self, current_position, opponent_position, player_name):
         """ Prompt the user for a move and a block, returning both coordinates """
-        legal_moves = self.get_legal_moves(current_position)
+        legal_moves = self.get_legal_moves(current_position, opponent_position)
         print(f"{player_name}'s turn!")
         print("Potential moves:", legal_moves)
 
@@ -85,12 +86,12 @@ if __name__ == "__main__":
     player = IsolationPlayer(board)
 
     p1_position = (0, 2)
-    p2_position = (7, 3)
+    p2_position = (5, 3)
     board.display(p1_position, p2_position)
 
     while True:
-        move, block = player.get_user_move_and_block(p1_position, "P1")
-        if not player.make_move(move):
+        move, block = player.get_user_move_and_block(p1_position, p2_position, "P1")
+        if not player.make_move(p1_position, move, p2_position):
             print("Invalid move for P1. Try again.")
             continue
         if not player.make_block(block):
@@ -99,8 +100,8 @@ if __name__ == "__main__":
         p1_position = move
         board.display(p1_position, p2_position)
 
-        move, block = player.get_user_move_and_block(p2_position, "P2")
-        if not player.make_move(move):
+        move, block = player.get_user_move_and_block(p2_position, p1_position, "P2")
+        if not player.make_move(p2_position, move, p1_position):
             print("Invalid move for P2. Try again.")
             continue
         if not player.make_block(block):

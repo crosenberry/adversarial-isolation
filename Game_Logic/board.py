@@ -37,7 +37,10 @@ class IsolationBoard:
 
     def block_cell(self, position):
         x, y = position
-        self.board[y][x] = 'X'  # Using 'X' to represent blocked cells
+        if self.is_valid_position(x, y) and self.board[y][x] == 1:
+            self.board[y][x] = 0  # Using 0 for internal representation of blocked cells
+            return True
+        return False
 
     def unblock_cell(self, position):
         x, y = position
@@ -52,6 +55,8 @@ class IsolationBoard:
                     display_row.append('P1')
                 elif (x, y) == p2_position:
                     display_row.append('P2')
+                elif cell == 0:
+                    display_row.append('X')
                 else:
                     display_row.append(str(cell))
             print(' '.join(display_row))
