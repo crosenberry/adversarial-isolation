@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     # Pass the board instance to the player
     p1 = IsolationPlayer(b)
-    p2 = AIPlayer(b, 3, "heuristic_1")
+    p2 = AIPlayer(b, 3, "heuristic_2")
 
     # Create an instance of tkinter and run the game
     root = gui.tk.Tk()
