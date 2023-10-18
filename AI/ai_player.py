@@ -6,6 +6,7 @@ class AIPlayer:
         self.decision_maker = DecisionMaker(self, board)
         self.max_depth = max_depth
         self.heuristic_type = heuristic_type
+        self.past_blocks = set()  # A set to store past blocks
 
     def get_legal_moves(self, board, current_position, opponent_position):
         x, y = current_position
@@ -29,29 +30,38 @@ class AIPlayer:
         return self.decision_maker.choose_move(current_position, opponent_position, self.max_depth, self.heuristic_type)
 
     def compute_block(self, board, current_position, opponent_position):
-        # Initialize the cell to block and its resultant moves to the maximum possible
         best_block = None
         min_future_moves = float('inf')
 
         # Iterate over all cells on the board
         for i in range(6):
             for j in range(8):
-                # If the cell is not already blocked and isn't occupied by either player
-                if board.is_position_free((i, j)) and (i, j) not in [current_position, opponent_position]:
+                cell = (i, j)
+
+                # Ensure the cell is not already blocked, isn't occupied by either player, and hasn't been blocked before
+                if board.is_position_free(cell) and cell not in [current_position,
+                                                                 opponent_position] and cell not in self.past_blocks:
+
                     # Simulate a block at this cell
-                    board.block_cell((i, j))
+                    board.block_cell(cell)
 
                     # Calculate the possible future moves for the opponent two steps ahead
                     opponent_next_moves = self.get_legal_moves(board, opponent_position, current_position)
                     future_moves_count = sum(
-                        len(self.get_legal_moves(board, next_move, current_position)) for next_move in opponent_next_moves)
+                        len(self.get_legal_moves(board, next_move, current_position)) for next_move in
+                        opponent_next_moves)
 
                     # Restore the cell (remove the block) for the next iteration
-                    board.unblock_cell((i, j))
+                    board.unblock_cell(cell)
 
                     # Check if this block is better than the previous best block
                     if future_moves_count < min_future_moves:
                         min_future_moves = future_moves_count
-                        best_block = (i, j)
+                        best_block = cell
+
+        # Add the chosen block to the past_blocks set
+        if best_block:
+            self.past_blocks.add(best_block)
 
         return best_block
+
