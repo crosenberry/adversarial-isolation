@@ -38,8 +38,9 @@ This means that no player can move to that cell in a future move.
 
 ## Heuristics
 Two heuristics will be used to design the game.  
-
-### Heuristic 1:
-### Heuristic 2:
+The heuristics determine how the AI player plays the game.  
+To change which heuristic you'd like to play against, change it in [main.py](main.py)  
+- Heuristic 1 can be chosen using "heuristic_1"
+- Heuristic 2 can be chosen using "heuristic_2"
 
 
