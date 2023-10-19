@@ -21,8 +21,6 @@ by a player.
 
 ## Instructions
 - To play the game, run [main.py](main.py).
-- Player 1 will begin each game, able to move one space around them and then block one space on the board.  
-- Then, player 2 will do the same and turns will rotate until one player cannot move anymore, thus making them in "Isolation"
 - Player 2 can be controlled by another human or by the algorithms implemented in this program.
 - For legal game moves and board functionality testing, reference [Game_Logic](Game_Logic).
 - To examine the heuristics used by the other player, examine [AI](AI).

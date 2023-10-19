@@ -11,6 +11,7 @@ from AI.ai_player import AIPlayer
 # Description:
 # Main.py receives an instance of the IsolationBoard and IsolationPlayer.
 # Then we tie these objects to the GUI so that it can display the game as its played.
+# Isolation player is a human player and AI player is the decision maker (heuristics)
 # =============================================================================
 
 if __name__ == "__main__":
@@ -18,8 +19,9 @@ if __name__ == "__main__":
     b = IsolationBoard()
 
     # Pass the board instance to the player
+    # Larger depth = longer computations. (5 default)
     p1 = IsolationPlayer(b)
-    p2 = AIPlayer(b, 3, "heuristic_1")
+    p2 = AIPlayer(b, 5, "heuristic_1") # Change to "heuristic_2" if playing against 2.
 
     # Create an instance of tkinter and run the game
     root = gui.tk.Tk()
